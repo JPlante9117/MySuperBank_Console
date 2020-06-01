@@ -1,26 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MySuperBank
 {
     public class BankAccount
     {
-        public string Number { get; set; }
-        public string Owner { get; set; }
-        private decimal Balance { get; set; }
-
+        public string Number { get; }
+        public List<string> Owners = new List<string>();
+        private List<Transaction> allTransactions = new List<Transaction>();
+        private decimal Balance {
+            get {
+                decimal balance = 0;
+                foreach (var item in allTransactions)
+                {
+                    balance += item.Amount;
+                }
+                return balance;
+            }
+        }
+        
         private static int accountNumberSeed = 1234567890;
 
-        public BankAccount(string name, decimal initialBalance)
+        public BankAccount(string name)
         {
-            Balance = initialBalance;
-            Owner = name;
+            Owners.Add(name);
             Number = accountNumberSeed.ToString();
             accountNumberSeed++;
         }
+        public string ListOwners()
+        {
+            string owners = Owners[0];
+            
+            if(Owners.Count > 1)
+            {
+                for (int i = 1; i < Owners.Count; i++)
+                {
+                    owners += ", " + Owners[i];
+                }
+            }
+            
+            return owners;
+        }
         public void MakeDeposit(decimal depositAmt, DateTime date, string note)
         {
+
             Balance += depositAmt;
             Console.WriteLine($"{date} -- NEW BAL {Balance} -- {note}");
         }
