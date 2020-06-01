@@ -23,8 +23,9 @@ namespace MySuperBank
         
         private static int accountNumberSeed = 1234567890;
 
-        public BankAccount(string name)
+        public BankAccount(string name, decimal initialBal)
         {
+            MakeDeposit(initialBal, DateTime.Now, "CREATING ACCOUNT...");
             Owners.Add(name);
             Number = accountNumberSeed.ToString();
             accountNumberSeed++;
@@ -45,21 +46,25 @@ namespace MySuperBank
         }
         public void MakeDeposit(decimal depositAmt, DateTime date, string note)
         {
-
-            Balance += depositAmt;
-            Console.WriteLine($"{date} -- NEW BAL {Balance} -- {note}");
+            if(depositAmt <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(depositAmt), "Amount of deposit must be positive");
+            }
+            var deposit = new Transaction(depositAmt, date, note);
+            allTransactions.Add(deposit);
         }
         public void MakeWithdrawal(decimal withdrawalAmt, DateTime date, string note)
         {
+            if(withdrawalAmt <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(withdrawalAmt), "Amount of withdrawal must be positive");
+            }
             if(Balance - withdrawalAmt < 0)
             {
-                Console.WriteLine("OVERDRAFT PROTECTION: CANNOT WITHDRAW FUNDS");
-            } else
-            {
-                Balance -= withdrawalAmt;
-                Console.WriteLine($"{date} -- NEW BAL {Balance} -- {note}");
-
+                throw new InvalidOperationException("OVERDRAFT: Not enough funds");
             }
+            var withdrawal = new Transaction(-withdrawalAmt, date, note);
+            allTransactions.Add(withdrawal);
         }
         public decimal GetBalance()
         {
