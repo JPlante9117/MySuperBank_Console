@@ -70,5 +70,21 @@ namespace MySuperBank
         {
             return $"Your new balance is {Balance}";
         }
+        public string GetTransactionHistory()
+        {
+            var report = new StringBuilder();
+            //HEADER
+            report.AppendLine("Date\t\tAmount\t\tNote");
+            report.AppendLine("____\t\t______\t\t____");
+            report.AppendLine("");
+
+            foreach (var item in allTransactions)
+            {
+                //ROWS
+                report.AppendLine($"{item.Date.ToShortDateString()}\t${item.Amount}\t\t{item.Notes}\t\t");
+            }
+
+            return report.ToString();
+        }
     }
 }

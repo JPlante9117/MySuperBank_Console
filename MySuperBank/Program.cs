@@ -19,13 +19,24 @@ namespace MySuperBank
         
         static void Main(string[] args)
         {
-            BankAccount account = new BankAccount("Jacques", 10000);
+            try
+            {
+                BankAccount account = new BankAccount("Jacques", 10000);
 
-            Console.WriteLine($"Account {account.Number} was created for {account.ListOwners()} with {account.GetBalance()}");
+                Console.WriteLine($"Account {account.Number} was created for {account.ListOwners()} with {account.GetBalance()}");
 
-            account.MakeWithdrawal(60, DateTime.Now, "Bought Paper Mario");
+                account.MakeWithdrawal(60, DateTime.Now, "Bought Paper Mario");
 
-            Console.WriteLine(account.GetBalance());
+                Console.WriteLine(account.GetTransactionHistory());
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine(e);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }
