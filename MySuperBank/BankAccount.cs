@@ -66,9 +66,9 @@ namespace MySuperBank
             var withdrawal = new Transaction(-withdrawalAmt, date, note);
             allTransactions.Add(withdrawal);
         }
-        public decimal GetBalance()
+        public string GetBalance()
         {
-            return Balance;
+            return $"Your new balance is {Balance}";
         }
     }
 }

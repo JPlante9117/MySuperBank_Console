@@ -19,9 +19,13 @@ namespace MySuperBank
         
         static void Main(string[] args)
         {
-            BankAccount account = new BankAccount("Jacques");
+            BankAccount account = new BankAccount("Jacques", 10000);
 
             Console.WriteLine($"Account {account.Number} was created for {account.ListOwners()} with {account.GetBalance()}");
+
+            account.MakeWithdrawal(60, DateTime.Now, "Bought Paper Mario");
+
+            Console.WriteLine(account.GetBalance());
         }
     }
 }
